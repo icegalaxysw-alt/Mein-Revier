@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Mein Revier - Live Wind</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #map {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // 1. Karte initialisieren
+        var map = L.map('map');
+
+        // 2. Topografische Hintergrundkarte laden (OpenTopoMap)
+        L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+            maxZoom: 17,
+            attribution: '© OpenTopoMap'
+        }).addTo(map);
+
+        // 3. Live-Winddaten von OpenWeatherMap drüberlegen
+        var apiKey = 'b9b7aadc344a1b075fd7c6e48e8d0c5f';
+        L.tileLayer('https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=' + apiKey, {
+            opacity: 0.6,
+            attribution: '© OpenWeatherMap'
+        }).addTo(map);
+
+        // 4. Deine eingetragenen Reviergrenzen (GeoJSON)
+        var revierData = {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "properties": {},
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [10.5890813, 52.4331618],
+                    [10.5899854, 52.4317957],
+                    [10.5919115, 52.4309449],
+                    [10.5930515, 52.4298423],
+                    [10.593307, 52.4288357],
+                    [10.5940539, 52.4277811],
+                    [10.5971593, 52.4267744],
+                    [10.6011294, 52.4329461],
+                    [10.60337, 52.4326824],
+                    [10.6040383, 52.4328262],
+                    [10.6031145, 52.4354984],
+                    [10.6038591, 52.4355772],
+                    [10.6032498, 52.4375782],
+                    [10.605569, 52.4377579],
+                    [10.6064338, 52.4387524],
+                    [10.6064928, 52.4393395],
+                    [10.6048811, 52.4404417],
+                    [10.6063552, 52.4416638],
+                    [10.6076328, 52.44152],
+                    [10.6120157, 52.4378418],
+                    [10.6248135, 52.4441817],
+                    [10.6248332, 52.444589],
+                    [10.6276437, 52.4459906],
+                    [10.6275455, 52.4464578],
+                    [10.6261304, 52.4476677],
+                    [10.6317333, 52.4510945],
+                    [10.6297285, 52.4524959],
+                    [10.6299251, 52.4533104],
+                    [10.6280579, 52.455598],
+                    [10.6287262, 52.4572508],
+                    [10.6192724, 52.4584125],
+                    [10.6186042, 52.4568676],
+                    [10.6171498, 52.4570592],
+                    [10.6119413, 52.4559094],
+                    [10.5867271, 52.4498552],
+                    [10.585371, 52.4475553],
+                    [10.5856855, 52.4457943],
+                    [10.5857248, 52.4450276],
+                    [10.5836611, 52.4429431],
+                    [10.5814286, 52.4412611],
+                    [10.5808586, 52.4401948],
+                    [10.5811731, 52.440051],
+                    [10.5811338, 52.438757],
+                    [10.5803869, 52.4372233],
+                    [10.5810551, 52.4366722],
+                    [10.5810158, 52.4360611],
+                    [10.5854381, 52.4346831],
+                    [10.5872463, 52.4339162],
+                    [10.5890813, 52.4331618]
+                  ]
+                ]
+              }
+            }
+          ]
+        };
+
+        // 5. Reviergrenze zeichnen und Ansicht automatisch anpassen
+        var layer = L.geoJSON(revierData, {
+            style: {
+                color: '#e63946',
+                weight: 3,
+                fillColor: '#e63946',
+                fillOpacity: 0.15
+            }
+        }).addTo(map);
+
+        // Zoom direkt auf die Grenzen zentrieren
+        map.fitBounds(layer.getBounds());
+    </script>
+</body>
+</html>
